@@ -10,31 +10,31 @@ package listaenlazadaMod;
  * @author Allan
  */
 public class Lista {
-
+    
     NodoEntero topeLista;
-
+    
     public Lista() {
         this.topeLista = null;
     }
-
+    
     public void insertar(int numero, String nombre) {
         NodoEntero nodo = new NodoEntero(numero, nombre);
         InsertarOrdenadamente(nodo);
     }
-
+    
     public void insertar(NodoEntero nodo) {
         if (vacia()) {
             topeLista = nodo;
         } else {
             NodoEntero actual = topeLista;
-
+            
             while (actual.getSig() != null) {
                 actual = actual.getSig();
             }
             actual.setSig(nodo);
         }
     }
-
+    
     public int TamanoLista() {
         NodoEntero recorrido = topeLista;
         int cont = 0;
@@ -44,7 +44,7 @@ public class Lista {
         }
         return cont;
     }
-
+    
     public NodoEntero FinLista() {
         NodoEntero recorrido = topeLista;
         while (recorrido.getSig() != null) {
@@ -52,34 +52,37 @@ public class Lista {
         }
         return recorrido;
     }
-
+    
     public void InsertarOrdenadamente(NodoEntero nodo) {
         if (vacia()) {
             topeLista = nodo;
-        } else {
+        } else {            
             NodoEntero actual = topeLista;
             NodoEntero temporal = topeLista;
-
-            while (actual != null) {
-                if(nodo.getEntero()>topeLista.getEntero()){
-                    topeLista.setSig(nodo);
-                       
+            if (actual.getSig() == null) {
+                if (actual.getEntero() >= nodo.getEntero()) {
+                    actual.setSig(nodo);
+                    topeLista = actual;
                 }
-
-
-
+                topeLista =nodo;
+                
+            }
+            while (actual != null) {
+                if (nodo.getEntero() > actual.getEntero()) {
+                    topeLista.setSig(nodo);
+                    
+                }
+                
             }
         }
-
-
-
+        
     }
-
+    
     public void eliminar(int entero, String nombre) {
         NodoEntero nodo = new NodoEntero(entero, nombre);
         eliminar(nodo);
     }
-
+    
     public void eliminar(NodoEntero nodo) {
         if (vacia()) {
             return;
@@ -101,16 +104,16 @@ public class Lista {
             } else {
                 topeLista = topeLista.getSig();
             }
-
+            
         }
     }
-
+    
     public void mostrar() {
         //public String mostrar(){
         System.out.println(topeLista);
         //return topeLista.toString();
     }
-
+    
     public boolean vacia() {
         return topeLista == null;
     }
