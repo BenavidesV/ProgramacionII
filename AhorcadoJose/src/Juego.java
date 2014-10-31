@@ -22,7 +22,6 @@ public class Juego extends javax.swing.JFrame {
     String incognita, mostrar;
     String[] raya;
     int partidas, victorias, fallos;
-
     double rendimiento;
 
     /**
@@ -36,10 +35,10 @@ public class Juego extends javax.swing.JFrame {
     public void Ganar() {
         if (fallos < 6 && incognita.equalsIgnoreCase(mostrar)) {
             victorias++;
-//            lblProgreso.set
             lblProgreso.setIcon(new ImageIcon("Imagenes/correct.jpeg"));
             JOptionPane.showMessageDialog(null, "Ha ganado");
             btnResolver.setEnabled(false);
+            Activar(false);
 
         }
     }
@@ -48,8 +47,13 @@ public class Juego extends javax.swing.JFrame {
         // SE GENERA LA MATRIZ DE BOTONES
         int cont = 0;
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 5; j++) {
+
+
+                if (i == 5 && j > 0) {
+                    break;
+                }
 
                 //Generar matriz de botones
                 boton[i][j] = new JButton();
@@ -60,11 +64,26 @@ public class Juego extends javax.swing.JFrame {
                         Comprobar((JButton) e.getSource());
                     }
                 });
+
                 boton[i][j].setBounds(5 + (50 * i), 15 + (50 * j), 39, 39);
                 boton[i][j].setText("" + ((char) ((65 + cont))));
                 boton[i][j].setEnabled(false);
                 add(boton[i][j]);
                 cont++;
+
+                /*
+                 * boton[5][0] = new JButton();
+                 * boton[5][0].addActionListener(new ActionListener() {
+                 *
+                 * @Override public void actionPerformed(ActionEvent e) {
+                 * Comprobar((JButton) e.getSource()); } });
+                 */
+                /*
+                 * boton[5][0].setBounds(5 + (50 * 5), 15 + (50 * 0), 39, 39);
+                 * boton[5][0].setText("Z"); boton[5][0].setEnabled(false);
+                 * add(boton[5][0]);
+                 */
+
             }
         }
     }
@@ -117,7 +136,24 @@ public class Juego extends javax.swing.JFrame {
 
     }
 
+    public void Activar(boolean a) {
+
+        for (int i = 0; i < 6; i++) {
+            for (int j = 0; j < 5; j++) {
+                if (i == 5 && j > 0) {
+                    break;
+                }
+                boton[i][j].setEnabled(a);
+            }
+
+        }
+        /*
+         * boton[5][0].setVisible(false); boton[5][0].repaint(); this.repaint();
+         */
+
+    }
     //Este método muestra el avance de la palabra y la cantidad de fallos
+
     public void Mostrar() {
         mostrar = "";
         for (int i = 0; i < raya.length; i++) {
@@ -136,11 +172,14 @@ public class Juego extends javax.swing.JFrame {
         lbl4.setEnabled(false);
         lbl5.setEnabled(false);
         lbl6.setEnabled(false);
+        
+//        lblProgreso.setIcon(new ImageIcon("Imagenes/ahorcado_"+fallos+".jpg"));
 
         if (fallos == 6) {
             lbl6.setEnabled(true);
             JOptionPane.showMessageDialog(null, "Perdió");
             lblProgreso.setIcon(new ImageIcon("Imagenes/ahorcado_6.jpg"));
+            Activar(false);
 
         }
         if (fallos >= 5) {
@@ -214,6 +253,7 @@ public class Juego extends javax.swing.JFrame {
             }
         });
 
+        lblProgreso.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblProgreso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/ahorcado_0.jpg"))); // NOI18N
 
         lblIncognita.setBackground(new java.awt.Color(102, 0, 0));
@@ -279,47 +319,40 @@ public class Juego extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(btnIniciar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 229, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnIniciar)
-                                .addGap(197, 197, 197)
-                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(btnResolver, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(btnEstadisticas, javax.swing.GroupLayout.Alignment.TRAILING)))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(lblProgreso, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)))
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 246, Short.MAX_VALUE)
-                        .addComponent(lblIncognita, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(111, 111, 111))))
+                    .addComponent(lblIncognita, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(btnResolver, javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(btnEstadisticas, javax.swing.GroupLayout.Alignment.TRAILING)))
+                        .addComponent(lblProgreso, javax.swing.GroupLayout.PREFERRED_SIZE, 359, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(22, 22, 22))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lblProgreso, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(31, 31, 31)
-                .addComponent(lblIncognita, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lblProgreso, javax.swing.GroupLayout.PREFERRED_SIZE, 561, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnIniciar)
+                            .addComponent(lblIncognita, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(79, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnEstadisticas)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnIniciar)
-                            .addComponent(btnResolver))
-                        .addContainerGap())
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addComponent(btnResolver)
+                        .addGap(46, 46, 46))))
         );
 
         pack();
@@ -327,6 +360,7 @@ public class Juego extends javax.swing.JFrame {
 
     private void btnIniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarActionPerformed
         // TODO add your handling code here:
+
         lblProgreso.setIcon(new ImageIcon("Imagenes/ahorcado_0.jpg"));
         btnResolver.setEnabled(true);
         partidas++;
@@ -335,12 +369,7 @@ public class Juego extends javax.swing.JFrame {
         incognita = Palabras();
         raya = new String[incognita.length()];
 
-        for (int i = 0; i < 5; i++) {
-            for (int j = 0; j < 5; j++) {
-                boton[i][j].setEnabled(true);
-            }
-
-        }
+        Activar(true);
         Mostrar();
 
     }//GEN-LAST:event_btnIniciarActionPerformed
@@ -348,12 +377,7 @@ public class Juego extends javax.swing.JFrame {
     private void btnResolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResolverActionPerformed
         // este boton muestra la solución y desactiva las letras
         lblIncognita.setText(incognita);
-        for (int i = 0; i < 5; i++) {
-            for (int j = 0; j < 5; j++) {
-                boton[i][j].setEnabled(false);
-            }
-
-        }
+        Activar(false);
     }//GEN-LAST:event_btnResolverActionPerformed
 
     private void btnEstadisticasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEstadisticasActionPerformed
